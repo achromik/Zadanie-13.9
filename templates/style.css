@@ -1,0 +1,42 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 100vh;
+    background: linear-gradient( rgba(133, 220, 224, 0.81), rgba(1, 12, 19, 0.82) ), url(https://unsplash.it/1200/600?image=204) 50% 50%;
+    background-size: cover;
+    color: #fff;
+}
+
+form {
+    background: rgba(0,0,0,0.4);
+    padding: 30px;
+    border-radius: 10px;
+    width: 300px;
+}
+
+#submit {
+    font-size: 20px;
+    padding: 9px 35px;
+}
+
+h1 {
+    font-weight: 900;
+}
+
+.help-block {
+    height: 20px;
+    color: red;
+}
+
+.image {
+    border: 0.5px solid rgba(0, 0, 0, .5);
+    box-shadow: 5px 5px 10px #303033;
+    margin: 25px;
+}
+
+img {
+    max-height: 66vh;
+    max-width: 66vw;
+}

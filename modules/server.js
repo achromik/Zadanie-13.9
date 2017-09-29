@@ -1,7 +1,7 @@
 var http = require('http'),
     colors = require('colors'),
     handlers = require('./handlers');
-
+   
 function start() {
     function onRequest(request, response) {
         console.log('Received request');
@@ -18,6 +18,9 @@ function start() {
                 break;
             case '/show' :
                 handlers.show(request, response);
+                break;
+            case '/style.css' :
+                handlers.style(request, response);
                 break;
             default:
                 handlers.error(request, response);        
