@@ -8,7 +8,9 @@ var fileName,
 exports.upload = function(request, response) {
     console.log('Start handling upload request.');
     var form = new formidable.IncomingForm();
-    form.multiples = true;
+    
+    //for multiples upload files TODO 
+    //form.multiples = true;
 
     //check if uploading folder exist
     if (!fs.existsSync(filePath)) {

@@ -13,7 +13,11 @@ form {
     background: rgba(0,0,0,0.4);
     padding: 30px;
     border-radius: 10px;
-    width: 300px;
+    width: 350px;
+}
+small {
+    font-weight: 400;
+    font-size: 75%;
 }
 
 #submit {
