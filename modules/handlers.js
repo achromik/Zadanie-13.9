@@ -16,7 +16,16 @@ exports.upload = function(request, response) {
     }
     
     form.parse(request, function(err, fields, files) {
-        if(files.upload.size) {
+        
+        if(files.upload === undefined) {
+            console.log('No form sended!'.red);
+            response.writeHead(200, {'Content-Type': 'text/html; charset=utf-8'});
+            response.write('<h2>You don\'t send any form!!</h2>');
+            response.write('<h2>For uplaoding files go <a href="/">here</a></h2>');
+            response.end();
+
+        } else {
+            if(files.upload.size) {
 
             //set file name 
             fileName = fields.fileName.trim() || files.upload.name;
@@ -47,7 +56,7 @@ exports.upload = function(request, response) {
             response.writeHead(200, {'Content-Type': 'text/html; charset=utf-8'});
             response.write('File size ZERO or no file!');
             response.end()
-        }
+        }}
     });
 }
 
@@ -62,9 +71,11 @@ exports.welcome = function(request, response) {
 
 exports.error = function(request, response) {
     console.log('I don\'t know what to do!?');
+    response.writeHead(404, {'Content-Type' : 'text/html'});
     response.write('404 :(');
     response.end();
 }
+
 
 exports.show = function(request, response) {
     fs.readFile(filePath + fileName, 'binary', function(err, file) {
