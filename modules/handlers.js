@@ -10,7 +10,7 @@ exports.upload = function(request, response) {
     var form = new formidable.IncomingForm();
     
     //for multiples upload files TODO 
-    //form.multiples = true;
+    form.multiples = true;
 
     //check if uploading folder exist
     if (!fs.existsSync(filePath)) {
@@ -25,40 +25,33 @@ exports.upload = function(request, response) {
             response.write('<h2>You don\'t send any form!!</h2>');
             response.write('<h2>For uplaoding files go <a href="/">here</a></h2>');
             response.end();
-
         } else {
-            if(files.upload.size) {
-
-            //set file name 
-            fileName = fields.fileName.trim() || files.upload.name;
-            //validate fileName 
-            fileName = fileName.replace(/[\s]/g, '_').replace(/[\\/:*?<>|]/g, '');
-
-            /**** when script is on another partition this line generate: "Error: EXDEV, cross-device link not permitted" */
-            // fs.renameSync(files.upload.path, "test.png");
+            for( var i =0; i < files.upload.length; i++) {
+                if (files.upload[i].size) {
+                    var readStream = fs.createReadStream(files.upload[i].path);
+                    var writeStream = fs.createWriteStream(filePath + files.upload[i].name);
+                    readStream.pipe(writeStream);    
+                }       
+            }
             
-            /**** alterante version for line above whit no "Error: EXDEV, cross-device link not permitted"  */
-            var readStream = fs.createReadStream(files.upload.path);
-            var writeStream = fs.createWriteStream(filePath + fileName);
-            readStream.pipe(writeStream);
-
-            //when uploadin delete temporary file 
             readStream.on('end', function() {
-                fs.unlinkSync(files.upload.path);
+                for( var i =0; i < files.upload.length; i++) {
+                    fs.unlinkSync(files.upload[i].path);
+                }
             });
-            //*** end of alternate version */
-            
-            fs.readFile('templates/uploaded.html', function(err, html) { 
+
+            fileName = files.upload[Math.floor(Math.random()*files.upload.length)].name;
+            fs.readFile('templates/uploaded-start.html', function(err, html) { 
                 response.writeHead(200, {'Content-Type': 'text/html; charset=utf-8'});
+                response.write(html + files.upload.length);
+                
+            });
+            fs.readFile('templates/uploaded-end.html', function(err, html) { 
+                
                 response.write(html);
                 response.end();
             });
-        } else {
-            console.log('File size ZERO or no file!'.red);
-            response.writeHead(200, {'Content-Type': 'text/html; charset=utf-8'});
-            response.write('File size ZERO or no file!');
-            response.end()
-        }}
+        }
     });
 }
 
